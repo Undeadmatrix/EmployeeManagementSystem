@@ -9,25 +9,27 @@ class DB {
   // Find all departments
   findAllDepartments() {
     // UNCOMMENT the line betow to code your query to select all departments
-    // return this.connection.query(YOUR_QUERY_FOR_SELECT_ALL_DEPTS);
+    return this.connection.query("SELECT * FROM department");
   }
 
   // Create a new department
   createDepartment(department) {
     // UNCOMMENT the line betow to code your query to create a department, replacing ? with department to SET
-    // return this.connection.query(YOUR_QUERY_FOR_INSERT);
+    console.log(department);
+    return this.connection.query("INSERT INTO department SET ?", department);
   }
 
   // Find all roles
   findAllRoles() {
     // UNCOMMENT the line betow to code your query to select all roles
-    // return this.connection.query(YOUR_QUERY_FOR_SELECT_ALL_ROLES);
+    return this.connection.query("SELECT * FROM role");
   }
 
   // Create a new role
   createRole(role) {
     // UNCOMMENT the line betow to code your query to create role
-    // return this.connection.query(YOUR_QUERY_FOR_INSERT);
+    console.log(role);
+    return this.connection.query("INSERT INTO role SET ?", role);
   }
 
   // Find all employees, join with roles and departments to display their roles, salaries, departments, and managers
@@ -40,7 +42,7 @@ class DB {
   // Create a new employee
   createEmployee(employee) {
     // UNCOMMENT the line below to code your insert query
-    // return this.connection.query(YOUR_QUERY_FOR_INSERT);
+    return this.connection.query("INSERT INTO employee SET ?", employee);
   }
 
   // Update the given employee's role
@@ -50,7 +52,9 @@ class DB {
   }
 
   // Find all employees in a given department, join with roles to display role titles
-  findAllEmployeesByDepartment(departmentId) {}
+  findAllEmployeesByDepartment(departmentId) {
+    
+  }
 
   // Find all employees by manager, join with departments and roles to display titles and department names
   findAllEmployeesByManager(managerId) {}

@@ -86,10 +86,10 @@ async function loadMainPrompts() {
 async function viewDepartments() {
   // Using await to call database function "find all departments" and assign the resultant array to a variable
   // UNCOMMENT the following line and add your code
-  // const YOUR_VARIALBE = await db.YOUR_DB_FUNCTION();
+  const YOUR_VARIABLE = await db.findAllDepartments();
 
   console.log("\n");
-  console.table(YOUR_VARIALBE);
+  console.table(YOUR_VARIABLE);
 
   loadMainPrompts();
 }
@@ -104,10 +104,9 @@ async function addDepartment() {
 
   // Using await to call database function to create department and assign the result to a variable
   // UNCOMMENT the following line and add your code
-  // await db.YOUR_DB_FUNCTION(YOUR_DEPT_VARIABLE);
+  await db.createDepartment(YOUR_DEPT_VARIABLE);
 
-  
-  console.log("Added " + YOUR_DEPT_NAME + " to the database");
+  console.log("Added " + YOUR_DEPT_VARIABLE + " to the database");
 
   loadMainPrompts();
 }
@@ -115,7 +114,7 @@ async function addDepartment() {
 async function viewRoles() {
   // Using await to call database function to find all roles and assign the resultant array to a variable
   // UNCOMMENT the following line and add your code
-  // const roles = await db.YOUR_DB_FUNCTION();
+  const roles = await db.findAllRoles();
 
 
   console.log("\n");
@@ -126,7 +125,7 @@ async function viewRoles() {
 
 async function addRole() {
   // Call your database funtion to select all depts and assign the result to a variable
-  const YOUR_DEPT_VAR = await db.YOUR_DB_FUNCTION_FOR_DEPTS();
+  const YOUR_DEPT_VAR = await db.findAllDepartments();
 
   const YOUR_DEPT_CHOICES = YOUR_DEPT_VAR.map(({ id, name }) => ({
     name: name,
@@ -151,7 +150,7 @@ async function addRole() {
   ]);
 
   // UNCOMMENT below to call database function to create role
-  // await db.YOUR_DB_FUNCTION_TO_CREATE_ROLE(role);
+  await db.createRole(role);
 
   console.log(`Added ${role.title} to the database`);
 
@@ -160,7 +159,7 @@ async function addRole() {
 
 async function viewEmployees() {
   // Using await keyword to call database function to find all employees and assign the returned result to a variable 
-  const YOUR_EMP_VAR = await db.YOUR_DB_FUNCTION_TO_FIND_ALL_EMPS();
+  const YOUR_EMP_VAR = await db.findAllEmployees();
 
   console.log("\n");
   console.table(YOUR_EMP_VAR);
@@ -225,7 +224,14 @@ async function addEmployee() {
   ]);
 
   // Prompt for role choices
-
+  const YOUR_ROLE_VAR = await db.findAllRoles();
+  const role = await prompt([
+    {
+      type: "list",
+      name: "role",
+      choices: YOUR_ROLE_VAR
+    }
+  ])
   // Assign the role to emplyee
   employee.role_id = roleId;
 
@@ -234,7 +240,7 @@ async function addEmployee() {
   // Assign the manager choice to employee
   employee.manager_id = managerId;
 
-  await db.YOUR_DB_FUNCTION_TO_CREATE_EMP_(employee);
+  await db.createEmployee(employee);
 
   console.log(
     `Added ${employee.first_name} ${employee.last_name} to the database`
