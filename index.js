@@ -170,7 +170,7 @@ async function viewEmployees() {
 
 async function updateEmployeeRole() {
   // Create an employee variable to store the array returned from database find all employees function using await
-  const YOUR_EMP_VAR = await db.YOUR_DB_FUNCTION_TO_FIND_ALL();
+  const YOUR_EMP_VAR = await db.findAllEmployees();
 
   // With the array variable from above, create a new array for objects for each element in the array variable
   const YOUR_EMP_CHOICES = YOUR_EMP_VAR.map(({ id, first_name, last_name }) => ({
@@ -187,7 +187,7 @@ async function updateEmployeeRole() {
     },
   ]);
 
-  const YOUR_ROLES_VAR = await db.YOUR_DB_FUNCTION_FOR_ALL_ROLES();
+  const YOUR_ROLES_VAR = await db.findAllRoles();
 
   const YOUR_ROLE_CHOICES = YOUR_ROLES_VAR.map(({ id, title }) => ({
     name: title,
@@ -203,7 +203,7 @@ async function updateEmployeeRole() {
     },
   ]);
 
-  await db.YOUR_DB_FUNCTION_FOR_UPDATE(employeeId, roleId);
+  await db.updateEmployeeRole(employeeId, roleId);
 
   console.log("Updated employee's role");
 
@@ -224,21 +224,40 @@ async function addEmployee() {
   ]);
 
   // Prompt for role choices
-  const YOUR_ROLE_VAR = await db.findAllRoles();
+  const YOUR_ROLES_VAR = await db.findAllRoles();
+
+  const YOUR_ROLE_CHOICES = YOUR_ROLES_VAR.map(({ id, title }) => ({
+    name: title,
+    value: id,
+  }));
+
   const role = await prompt([
     {
       type: "list",
-      name: "role",
-      choices: YOUR_ROLE_VAR
+      name: "roleId",
+      choices: YOUR_ROLE_CHOICES,
     }
   ])
   // Assign the role to emplyee
-  employee.role_id = roleId;
+  employee.role_id = role.roleId;
 
   // Prompt manager choices
+  const YOUR_MANAGER_VAR = await db.findAllManagers();
 
+  const YOUR_MANAGER_CHOICES = YOUR_MANAGER_VAR.map(({ id, first_name, last_name }) => ({
+    name: `${first_name} ${last_name}`,
+    value: id,
+  }));
+
+  const manager = await prompt([
+    {
+      type: "list",
+      name: "managerId",
+      choices: YOUR_MANAGER_CHOICES,
+    }
+  ]);
   // Assign the manager choice to employee
-  employee.manager_id = managerId;
+  employee.manager_id = manager.managerId;
 
   await db.createEmployee(employee);
 

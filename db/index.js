@@ -39,25 +39,39 @@ class DB {
     );
   }
 
+  // Find all managers
+  findAllManagers() {
+    return this.connection.query("SELECT * FROM employee WHERE manager_id IS NULL");
+  }
+
   // Create a new employee
   createEmployee(employee) {
     // UNCOMMENT the line below to code your insert query
-    return this.connection.query("INSERT INTO employee SET ?", employee);
+    console.log(employee);
+    return this.connection.query("INSERT INTO employee SET ?",
+    {
+        first_name: employee.first_name,
+        last_name: employee.last_name,
+        role_id: employee.role_id,
+        manager_id: employee.manager_id,
+    });
   }
 
   // Update the given employee's role
   updateEmployeeRole(employeeId, roleId) {
     // UNCOMMENT the line bolow to code your query to update role id for the given employee
-    // return this.connection.query(YOURY_QUERY_FOR UPDATE);
+    return this.connection.query("UPDATE employee SET role_id='?' WHERE id='?'",[roleId, employeeId]);
   }
 
   // Find all employees in a given department, join with roles to display role titles
   findAllEmployeesByDepartment(departmentId) {
-    
+    return this.connection.query("SELECT * FROM employee WHERE department = ?", departmentId);
   }
 
   // Find all employees by manager, join with departments and roles to display titles and department names
-  findAllEmployeesByManager(managerId) {}
+  findAllEmployeesByManager(managerId) {
+    return this.connection.query("SELECT * FROM employee WHERE manager = ?", managerId);
+  }
 }
 
 module.exports = new DB(connection);
